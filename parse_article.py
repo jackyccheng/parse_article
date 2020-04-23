@@ -29,9 +29,7 @@ def get_article(link):
     everything = list("".join(txt))
 
     # Removing some things from full list
-    removewords = ['。','，',' ',
-                   '.','"','、',
-                   '”',',','%']
+    removewords = ['。', '，', ' ', '.', '"', '、', '”', ',', '%', '“']
     resultwords = [t for t in everything if t not in removewords]
     char_et_al = ' '.join(resultwords)
 
@@ -42,7 +40,7 @@ def get_article(link):
     df = pd.DataFrame(characters)
     df.rename(columns = {df.columns[0]:'char'}, inplace=True)
 
-    top_df = df['char'].value_counts().head(20)
+    top_df = df['char'].value_counts().head(100)
     print(top_df)
 
 if __name__ == '__main__':
