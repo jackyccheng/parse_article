@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import argparse
+import string
 
 # Setting my arguments to pass through
 parser = argparse.ArgumentParser()
@@ -29,9 +30,12 @@ def get_article(link):
     everything = list("".join(txt))
 
     # Removing some things from full list
-    removewords = ['。', '，', ' ', '.', '"', '、', '”', ',', '%', '“']
+    removewords = ['。', '，', ' ', '.', '"', '、',
+                   '”', ',', '%', '“', '/','-','+']
+    removeletters = list(string.ascii_letters)
     resultwords = [t for t in everything if t not in removewords]
-    char_et_al = ' '.join(resultwords)
+    resultwords2 = [t for t in resultwords if t not in removeletters]
+    char_et_al = ' '.join(resultwords2)
 
     # Removes digits from list
     characters = [x for x in char_et_al if not (x.isdigit())]
@@ -40,7 +44,7 @@ def get_article(link):
     df = pd.DataFrame(characters)
     df.rename(columns = {df.columns[0]:'char'}, inplace=True)
 
-    top_df = df['char'].value_counts().head(100)
+    top_df = df['char'].value_counts().head(50)
     print(top_df)
 
 if __name__ == '__main__':
